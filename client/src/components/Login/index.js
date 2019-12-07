@@ -3,7 +3,7 @@ import "./style.css";
 
 function Login() {
   return (
-<form className = "center">
+<form className="center">
   <div className="form-group">
     <label htmlFor="exampleInputEmail1">Email address</label>
     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></input>
@@ -13,7 +13,8 @@ function Login() {
     <label htmlFor="exampleInputPassword1">Password</label>
     <input type="password" className="form-control" id="exampleInputPassword1"></input>
   </div>
-  <button type="submit" className="btn btn-primary">Submit</button>
+  <a className="createLink" href="/create">Click here to create new account</a><br></br>
+  <button type="submit" className="btn loginsub btn-primary">Submit</button>
 </form>
   
   )

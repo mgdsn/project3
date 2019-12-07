@@ -18,6 +18,33 @@
   font-size: large;
 }
 
+.mainContent {
+  flex: 1 0 auto;
+  margin-bottom: 350px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+canvas{
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  }
+
+.background {
+  position:absolute;
+  display:block;
+  top: 0;
+  left: 0;
+  z-index: -500;
+  background-color: #396362;
+  width: 100%;
+  height: 100%;
+  }
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
