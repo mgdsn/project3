@@ -9,3 +9,20 @@
 .loginsub{
   margin-top: 20px;
 }
+
+label{
+  color: #3c4245!important;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #3c4245!important;
+    border-color: #3c4245!important;
+}
+
+.createLink{
+  color: #3c4245!important;
+}

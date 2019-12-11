@@ -6,8 +6,15 @@ function Jumbo() {
   
 <div className="jumbotron jumbotron-fluid">
   <div className="container">
-    <h1 className="display-4">Fluid jumbotron</h1>
-    <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    <div className="row">
+      <div className="col-sm-4">
+    <h1 className="display-4">Patch2</h1>
+    <p className="lead">An interest-based approach to dating. Create an account and begin matching with people like you.</p>
+      </div>
+      <div className="col-sm-4">
+    <img className="logoImg" src="./images/logo.png" alt="logo"></img>
+     </div>
+    </div>
   </div>
 </div>
   

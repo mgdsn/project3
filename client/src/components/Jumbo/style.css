@@ -1,4 +1,9 @@
 .jumbotron{
-  background-color: #ffe7d1!important;
+  background-color: #719192!important;
+  color: #3c4245!important;
+}
 
+.logoImg{
+  margin: auto;    
+  display: block;
 }

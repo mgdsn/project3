@@ -13,7 +13,7 @@ function Login() {
     <label htmlFor="exampleInputPassword1">Password</label>
     <input type="password" className="form-control" id="exampleInputPassword1"></input>
   </div>
-  <a className="createLink" href="/create">Click here to create new account</a><br></br>
+  <a className="createLink" href="/create">Need to create an account? Click here!</a><br></br>
   <button type="submit" className="btn loginsub btn-primary">Submit</button>
 </form>
   
