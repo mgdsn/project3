@@ -5,7 +5,7 @@ function Login() {
   return (
 <form className="center">
   <div className="form-group">
-    <label htmlFor="exampleInputEmail1">Email address</label>
+    <label htmlFor="exampleInputEmail1">Email Address</label>
     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></input>
     <small id="emailHelp" className="form-text text-muted"></small>
   </div>

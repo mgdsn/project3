@@ -1,20 +1,25 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Nav from "./components/Nav";
-import Jumbo from "./components/Jumbo";
-import Login from "./components/Login";
+import Home from "./pages/Home";
+import Create from "./pages/Create";
+import About from "./pages/About";
 import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div>
-      <div className="mainContent">
-    <Nav />
-    <Jumbo />
-    <Login />
+    <Router>
+      <div>
+        <Nav />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/create" component={Create} />
+          <Route exact path="/about" component={About} />
+        </Switch>
+        <Footer />
       </div>
-    <Footer />
-    </div>
+    </Router>
   );
 }
 
