@@ -13,6 +13,7 @@ module.exports = function(app) {
     res.send('Welcome!');
   });
   app.get('/api/secret', withAuth, function(req, res) {
+    console.log(req.email);
     res.send('The password is potato');
   });
   
