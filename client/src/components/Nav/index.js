@@ -17,6 +17,12 @@ function Nav() {
       <li className="nav-item">
         <a className="nav-link" href="/about">About</a>
       </li>
+      <li className="nav-item">
+        <a className="nav-link" href="/profile">Profile</a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="/logout">Logout</a>
+      </li>
     </ul>
   </div>
 </nav>
