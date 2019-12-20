@@ -18,16 +18,24 @@ module.exports = function(app) {
     res.send('The password is potato');
   });
   
-  app.post('/api/register', function(req, res) {
-    console.log(req.body);
+  app.post("/api/register", function(req, res) {
     const { email, password } = req.body;
     const user = new User({ email, password });
-    user.save(function(err) {
-      if (err) {
-        res.status(500)
-          .send("Error registering new user please try again.");
+    User.findOne({
+        email: req.body.email
+    }).then(function(result) {
+      if (result !== null) {
+        console.log(result);
+        res.json("Yes, this is " + result);
       } else {
-        res.status(200).send("Welcome to the club!");
+        user.save(function(err) {
+          if (err) {
+            res.status(500)
+              .send("Error registering new user please try again.");
+          } else {
+            res.status(200).send("Welcome to the club!");
+          }
+        });
       }
     });
   });
@@ -74,10 +82,9 @@ module.exports = function(app) {
   });
 
   app.post('/api/logout', function(req, res) {
-            res.cookie('token', { httpOnly: true })
-              .sendStatus(200);
+    res.cookie('token', { httpOnly: true })
+      .sendStatus(200);
   });
-
 
   app.get('/checkToken', withAuth, function(req, res) {
     res.sendStatus(200);
