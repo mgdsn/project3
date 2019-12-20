@@ -9,3 +9,9 @@
 .navbar-brand{
   color: #719192!important;
 }
+
+.logout-btn{
+  background-color: #719192 ;
+  float: right;
+  margin-left: 15px;
+}
