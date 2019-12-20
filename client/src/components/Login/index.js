@@ -29,8 +29,6 @@ export default class Login extends Component {
     .then(res => {
       if (res.status === 200) {
         window.location.replace("/");
-        //this.props.history.push('/');
-        console.log("kewl");
       } else {
         const error = new Error(res.error);
         throw error;

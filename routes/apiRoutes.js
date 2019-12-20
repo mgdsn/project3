@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.get('/api/home', function(req, res) {
     res.send('Welcome!');
   });
+
   app.get('/api/secret', withAuth, function(req, res) {
     console.log(req.email);
     res.send('The password is potato');
@@ -70,6 +71,11 @@ module.exports = function(app) {
         });
       }
     });
+  });
+
+  app.post('/api/logout', function(req, res) {
+            res.cookie('token', { httpOnly: true })
+              .sendStatus(200);
   });
 
 
