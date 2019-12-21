@@ -38,10 +38,10 @@ export default class Nav extends Component {
         <a className="nav-link" href="/">Profile</a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="/">Patch</a>
+        <a className="nav-link" href="/patch">Patch</a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="/">Patched</a>
+        <a className="nav-link" href="/patched">Patched</a>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="/about">About</a>
