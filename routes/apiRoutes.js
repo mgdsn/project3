@@ -26,14 +26,14 @@ module.exports = function(app) {
     }).then(function(result) {
       if (result !== null) {
         console.log(result);
-        res.json("Yes, this is " + result);
+        res.send("A user with that email already exists.");
       } else {
         user.save(function(err) {
           if (err) {
             res.status(500)
               .send("Error registering new user please try again.");
           } else {
-            res.status(200).send("Welcome to the club!");
+            res.status(200).send("You are now registered.");
           }
         });
       }
