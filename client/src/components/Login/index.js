@@ -6,7 +6,8 @@ export default class Login extends Component {
     super(props)
     this.state = {
       email : '',
-      password: ''
+      password: '',
+      loginerror: ''
     };
   }
 
@@ -36,7 +37,7 @@ export default class Login extends Component {
     })
     .catch(err => {
       console.error(err);
-      alert('Error logging in please try again');
+      this.setState({loginerror: 'Error logging in, please try again'})
     });
   }
 
@@ -44,6 +45,8 @@ export default class Login extends Component {
     return (
 <form className="center" onSubmit={this.onSubmit}>
   <div className="form-group">
+  { this.state.loginerror &&
+  <h3 className="error"> {this.state.loginerror } </h3> }
     <label htmlFor="exampleInputEmail1">Email Address</label>
     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
     name="email"

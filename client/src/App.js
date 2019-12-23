@@ -8,6 +8,8 @@ import About from "./pages/About";
 import Footer from "./components/Footer";
 import Profile from "./pages/Profile";
 import withAuth from './withAuth';
+import Patch from "./pages/Patch";
+import Patched from "./pages/Patched";
 
 
 class App extends Component {
@@ -19,6 +21,8 @@ class App extends Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={withAuth(Profile)} />
+            <Route exact path="/patch" component={withAuth(Patch)} />
+            <Route exact path="/patched" component={withAuth(Patched)} />
             <Route exact path="/create" component={Create} />
             <Route exact path="/about" component={About} />
             <Route exact path="/login" component={Loginpage} />

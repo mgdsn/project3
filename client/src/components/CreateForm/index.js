@@ -35,7 +35,7 @@ export default class CreateForm extends Component {
       this.setState({apiresponse: res})})
     .catch(err => {
       console.error(err);
-      alert('Error registering please try again');
+      this.setState({apiresponse: 'Error logging in, please try again'})
     })
   }
 
