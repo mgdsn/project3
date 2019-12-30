@@ -2,21 +2,43 @@ import React, { Component } from 'react';
 import "./style.css";
 
 export default class ProfileForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email : '',
-      password: '',
-      loginerror: ''
+    state = {
+      displayname: '',
+      zip: '',
+      photo: '',
+      distance: '',
+      age: '',
+      minage: '',
+      maxage: '',
+      gender: '',
+      malematch: false,
+      femalematch: false,
+      othermatch: false,
+      subculture: '',
+      about: ''
     };
-  }
+
 
   handleInputChange = (event) => {
     const { value, name } = event.target;
+    console.log(this.state);
     this.setState({
       [name]: value
     });
   }
+
+  toggleMale(event) {
+    this.setState({malematch: !this.state.malematch});
+ }
+
+  toggleFemale(event) {
+    this.setState({femalematch: !this.state.femalematch});
+  }
+
+  toggleOther(event) {
+    this.setState({othermatch: !this.state.othermatch});
+  }
+
 
   onSubmit = (event) => {
     event.preventDefault();
@@ -48,24 +70,36 @@ export default class ProfileForm extends Component {
 
     <h3><strong>Patch2 Profile</strong></h3>
     <h4>Display Name</h4>
-    <input type="text" id="name" className="form-control quest" required />
+    <input type="text" id="name" className="form-control quest" required 
+    name="displayname"
+    value={this.state.displayname}
+    onChange={this.handleInputChange}
+    />
 
     <h4>Zip Code</h4>
-    <input type="number" id="zip" className="form-control quest" required />
+    <input type="number" id="zip" className="form-control quest" required 
+    name="zip"
+    value={this.state.zip}
+    onChange={this.handleInputChange}
+    />
 
-    <h4>Patching Distance</h4>
-    <select className="form-control form-control-sm quest" id="gender">
-      <option value=""></option>
-      <option value="1">1 Mile</option>
-      <option value="5">5 Miles</option>
-      <option value="10">10 Miles</option>
-      <option value="50">50 Miles</option>
-      <option value="300">300 Miles</option>
-      <option value="Anywhere">Anywhere</option>
-    </select>
+    <h4>Link to photo</h4>
+    <input type="text" id="photo" className="form-control quest" required 
+    name="photo"
+    value={this.state.photo}
+    onChange={this.handleInputChange}/>
+
+    <h4>Patching Distance (in Miles)</h4>
+    <input type="number" id="distance" className="form-control quest" required 
+    name="distance"
+    value={this.state.distance}
+    onChange={this.handleInputChange}/>
 
     <h4>Gender Identification</h4>
-    <select className="form-control form-control-sm quest" id="gender">
+    <select className="form-control form-control-sm quest" id="gender"
+    name="gender"
+    value={this.state.gender}
+    onChange={this.handleInputChange}>
       <option value=""></option>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
@@ -73,13 +107,28 @@ export default class ProfileForm extends Component {
     </select>
 
     <h4>Patch Gender Preference (Select all that apply)</h4>
-    <label className="checkbox-inline"><input type="checkbox" value="Male"/>Male </label>
-    <label className="checkbox-inline"><input type="checkbox" value="Female"/>Female </label>
-    <label className="checkbox-inline"><input type="checkbox" value="Other"/>Other </label>
+    <label className="checkbox-inline"><input type='checkbox'
+    name="malematch"
+    onClick={this.toggleMale.bind(this)}/>
+    Male </label>
+    <label className="checkbox-inline"><input type="checkbox"
+    name="femalematch"
+    onClick={this.toggleFemale.bind(this)}/>
+    /> Female </label>
+    <label className="checkbox-inline"><input type="checkbox" value="Other"
+    name="othermatch"
+    onClick={this.toggleOther.bind(this)}/>
+    /> Other </label>
 
+    <h4>Age</h4>
+    <input type="number" id="age" className="form-control quest" required/>
+
+    <h4>Patch Age Range</h4>
+    <input type="number" id="minage" className="form-control quest" required/> -
+    <input type="number" id="maxage" className="form-control quest" required/>
 
     <h4>Subculture Identification</h4>
-    <select className="form-control form-control-sm quest" id="q3">
+    <select className="form-control form-control-sm quest" id="subculture">
       <option value=""></option>
       <option value="Afrofuturism">Afrofuturism</option>
       <option value="Anarchopunk">Anarcho-punk</option>
@@ -133,7 +182,7 @@ export default class ProfileForm extends Component {
     </select>
 
     <h4>About Me</h4>
-    <textarea rows="5" name="extrainfo" id="extrainfo" className="form-control form-control-sm quest" required></textarea>
+    <textarea rows="5" name="extrainfo" id="about" className="form-control form-control-sm quest" required></textarea>
     <hr/>
 
 

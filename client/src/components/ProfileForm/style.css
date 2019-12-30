@@ -1,3 +1,8 @@
 .checkbox-inline{
   margin-right: 5px;
 }
+
+#minage, #maxage, #age{
+  width: 100px;
+  display: inline-block;
+}

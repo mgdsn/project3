@@ -40,6 +40,11 @@ module.exports = function(app) {
     });
   });
 
+  app.post("/api/updateprofile", withAuth, function(req, res) {
+    console.log ("this is email: " + req.email)
+    console.log("this is body: ") + req.body
+  });
+
 
   app.post('/api/authenticate', function(req, res) {
     const { email, password } = req.body;
