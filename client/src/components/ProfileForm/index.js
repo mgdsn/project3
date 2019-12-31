@@ -65,8 +65,8 @@ export default class ProfileForm extends Component {
 
   render() {
     return (
-<div className="container">
-  <div className="container" id="surveycontainer">
+      <form onSubmit={this.onSubmit}>
+
 
     <h3><strong>Patch2 Profile</strong></h3>
     <h4>Display Name</h4>
@@ -114,21 +114,33 @@ export default class ProfileForm extends Component {
     <label className="checkbox-inline"><input type="checkbox"
     name="femalematch"
     onClick={this.toggleFemale.bind(this)}/>
-    /> Female </label>
+    Female </label>
     <label className="checkbox-inline"><input type="checkbox" value="Other"
     name="othermatch"
     onClick={this.toggleOther.bind(this)}/>
-    /> Other </label>
+    Other </label>
 
     <h4>Age</h4>
-    <input type="number" id="age" className="form-control quest" required/>
+    <input type="number" id="age" className="form-control quest" required
+    name="age"
+    value={this.state.age}
+    onChange={this.handleInputChange}/>
 
     <h4>Patch Age Range</h4>
-    <input type="number" id="minage" className="form-control quest" required/> -
-    <input type="number" id="maxage" className="form-control quest" required/>
+    <input type="number" id="minage" className="form-control quest" required
+    name="minage"
+    value={this.state.minage}
+    onChange={this.handleInputChange} /> - 
+    <input type="number" id="maxage" className="form-control quest" required
+    name="maxage"
+    value={this.state.maxage}
+    onChange={this.handleInputChange}/>
 
     <h4>Subculture Identification</h4>
-    <select className="form-control form-control-sm quest" id="subculture">
+    <select className="form-control form-control-sm quest" id="subculture"
+      name="subculture"
+      value={this.state.subculture}
+      onChange={this.handleInputChange}>
       <option value=""></option>
       <option value="Afrofuturism">Afrofuturism</option>
       <option value="Anarchopunk">Anarcho-punk</option>
@@ -182,7 +194,10 @@ export default class ProfileForm extends Component {
     </select>
 
     <h4>About Me</h4>
-    <textarea rows="5" name="extrainfo" id="about" className="form-control form-control-sm quest" required></textarea>
+    <textarea rows="5" name="extrainfo" id="about" className="form-control form-control-sm quest" required
+    name="about"
+    value={this.state.about}
+    onChange={this.handleInputChange}></textarea>
     <hr/>
 
 
@@ -194,8 +209,7 @@ export default class ProfileForm extends Component {
       Save</button>
 
     <hr/>
-  </div>
-  </div>
+  </form>
     );
   }
 }
