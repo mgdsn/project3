@@ -51,8 +51,6 @@ export default class CreateForm extends Component {
     return (
 <form className="center" onSubmit={this.onSubmit}>
   <div className="form-group">
-  { this.state.apiresponse &&
-  <h3 className="error"> {this.state.apiresponse } {url} </h3> }
     <label htmlFor="exampleInputEmail1">Email Address</label>
     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
     name="email"
@@ -72,6 +70,8 @@ export default class CreateForm extends Component {
     onChange={this.handleInputChange}
     required
     ></input>
+      { this.state.apiresponse &&
+  <h3 className="error"> {this.state.apiresponse } {url} </h3> }
   </div>
   <button type="submit" className="btn loginsub btn-primary">Create Account</button>
 </form>

@@ -41,8 +41,28 @@ module.exports = function(app) {
   });
 
   app.post("/api/updateprofile", withAuth, function(req, res) {
-    console.log ("this is email: " + req.email)
-    console.log("this is body: ") + req.body
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$set": { "zip": req.body.zip, 
+    "displayname": req.body.displayname,
+    "photo": req.body.photo,
+    "distance": req.body.distance,
+    "age": req.body.age,
+    "minage": req.body.minage,
+    "maxage": req.body.maxage,
+    "gender": req.body.gender,
+    "malematch": req.body.malematch,
+    "femalematch": req.body.femalematch,
+    "othermatch": req.body.othermatch,
+    "subculture": req.body.subculture,
+    "about": req.body.about
+  }}).exec(function(err, data){
+      if(err) {
+          console.log(err);
+          res.status(500).send(err);
+      } else {
+        res.status(200).send("Successfully updated profile.");
+      }
+   });
   });
 
 

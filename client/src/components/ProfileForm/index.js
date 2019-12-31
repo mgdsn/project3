@@ -20,7 +20,8 @@ export default class ProfileForm extends Component {
       femalematch: false,
       othermatch: false,
       subculture: '',
-      about: ''
+      about: '',
+      apiresponse: ''
     };
 
 
@@ -63,16 +64,45 @@ export default class ProfileForm extends Component {
     fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/' + entzip + '/radians')
     .then(res => {
       if (res.status === 200) {
-       console.log ("kewl")
+
+        fetch('/api/updateprofile', {
+          method: 'POST',
+          body: JSON.stringify(this.state),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.text())
+        .then(res => {this.setState({apiresponse: res})})
+        .catch(err => {
+          console.error(err);
+          this.setState({apiresponse: 'Error updating profile, please try again'})
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
       } else {
-        console.log ("sux");
+        this.setState({apiresponse: 'Error, zip code not found. Please check zip and try again'})
         const error = new Error(res.error);
         throw error;
       }
     })
     .catch(err => {
       console.error(err);
-      this.setState({loginerror: 'Error logging in, please try again'})
+      this.setState({loginerror: 'Error updating profile, please try again'})
     });
   }
 
@@ -241,7 +271,8 @@ export default class ProfileForm extends Component {
 
     <br/>
     <br/>
-
+    { this.state.apiresponse &&
+  <h3 className="error"> {this.state.apiresponse } </h3> }
     <button type="submit" className="btn btn-primary btn-lg btn-block" id="submit"><i className="fa fa-check-circle"
         aria-hidden="true"></i>
       Save</button>
