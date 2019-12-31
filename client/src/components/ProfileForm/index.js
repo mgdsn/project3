@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import "./style.css";
+require("dotenv").config();
+
+const apikey = process.env.REACT_APP_ZIPAPIKEY;
+
+
 
 export default class ProfileForm extends Component {
     state = {
@@ -39,10 +44,43 @@ export default class ProfileForm extends Component {
     this.setState({othermatch: !this.state.othermatch});
   }
 
+  onSubmit2 = (event) => {
+    event.preventDefault();
+    const entzip = this.state.zip;
+    fetch('https://www.zipcodeapi.com/rest/' + apikey + '/info.json/' + entzip + '/radians')
+    .then(res => res.json()). then(data =>{
+      console.log(data);
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({loginerror: 'Error logging in, please try again'})
+    });
+  }
+
+  onSubmit3 = (event) => {
+    event.preventDefault();
+    const entzip = this.state.zip;
+    fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/' + entzip + '/radians')
+    .then(res => {
+      if (res.status === 200) {
+       console.log ("kewl")
+      } else {
+        console.log ("sux");
+        const error = new Error(res.error);
+        throw error;
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({loginerror: 'Error logging in, please try again'})
+    });
+  }
+
 
   onSubmit = (event) => {
     event.preventDefault();
-    fetch('/api/authenticate', {
+    const entzip = this.state.zip;
+    fetch('/api/authenticate/' + entzip, {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers: {
@@ -65,7 +103,7 @@ export default class ProfileForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit3}>
 
 
     <h3><strong>Patch2 Profile</strong></h3>
