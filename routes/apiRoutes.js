@@ -14,7 +14,6 @@ module.exports = function(app) {
   });
 
   app.get('/api/secret', withAuth, function(req, res) {
-    console.log(req.email);
     res.send('The password is potato');
   });
   
@@ -25,7 +24,6 @@ module.exports = function(app) {
         email: req.body.email
     }).then(function(result) {
       if (result !== null) {
-        console.log(result);
         res.send("A user with that email already exists.");
       } else {
         user.save(function(err) {
@@ -39,6 +37,45 @@ module.exports = function(app) {
       }
     });
   });
+
+  app.post("/api/updateprofile", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$set": { "zip": req.body.zip, 
+    "displayname": req.body.displayname,
+    "photo": req.body.photo,
+    "distance": req.body.distance,
+    "age": req.body.age,
+    "minage": req.body.minage,
+    "maxage": req.body.maxage,
+    "gender": req.body.gender,
+    "malematch": req.body.malematch,
+    "femalematch": req.body.femalematch,
+    "othermatch": req.body.othermatch,
+    "subculture": req.body.subculture,
+    "about": req.body.about
+  }}).exec(function(err, data){
+      if(err) {
+          console.log(err);
+          res.status(500).send(err);
+      } else {
+        res.status(200).send("Successfully updated profile.");
+      }
+   });
+  });
+
+  app.get("/api/getprofile", withAuth, function(req, res) {
+    User.findOne({
+        email: req.email
+    }).then(function(result) {
+      if (result.displayname !== null) {
+        res.status(200).send(result);
+      } else {
+        res.status(500).send("No info");
+      }
+    });
+  });
+
+
 
 
   app.post('/api/authenticate', function(req, res) {

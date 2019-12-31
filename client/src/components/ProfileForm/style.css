@@ -1,0 +1,25 @@
+.checkbox-inline{
+  margin-right: 5px;
+}
+
+#minage, #maxage, #age{
+  width: 100px;
+  display: inline-block;
+}
+
+form{
+  min-height: 100%;
+  padding-bottom: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.userphoto{
+  width: 200px;
+  height: 200px;
+}
+
+#malematch, #femalematch, #othermatch{
+margin-right: 5px
+}
+
