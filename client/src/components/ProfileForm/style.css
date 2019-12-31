@@ -13,3 +13,13 @@ form{
   margin-left: 100px;
   margin-right: 100px;
 }
+
+.userphoto{
+  width: 200px;
+  height: 200px;
+}
+
+#malematch, #femalematch, #othermatch{
+margin-right: 5px
+}
+

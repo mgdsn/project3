@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import "./style.css";
 require("dotenv").config();
 
-const apikey = process.env.REACT_APP_ZIPAPIKEY;
-
-
+//const apikey = process.env.REACT_APP_ZIPAPIKEY;
 
 export default class ProfileForm extends Component {
     state = {
@@ -24,10 +22,39 @@ export default class ProfileForm extends Component {
       apiresponse: ''
     };
 
+    componentWillMount() {
+      fetch('/api/getprofile')
+      .then(res => res.json())
+      .then(res => {
+        if (res.display !== null) {
+          this.setState({
+            zip: res.zip,
+            displayname: res.displayname,
+            photo: res.photo,
+            distance: res.distance,
+            age: res.age,
+            minage: res.minage,
+            maxage: res.maxage,
+            gender: res.gender,
+            malematch: res.malematch,
+            femalematch: res.femalematch,
+            othermatch: res.othermatch,
+            subculture: res.subculture,
+            about: res.about
+          })
+     
+        } else {
+          return
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+      
+    }
 
   handleInputChange = (event) => {
     const { value, name } = event.target;
-    console.log(this.state);
     this.setState({
       [name]: value
     });
@@ -45,20 +72,7 @@ export default class ProfileForm extends Component {
     this.setState({othermatch: !this.state.othermatch});
   }
 
-  onSubmit2 = (event) => {
-    event.preventDefault();
-    const entzip = this.state.zip;
-    fetch('https://www.zipcodeapi.com/rest/' + apikey + '/info.json/' + entzip + '/radians')
-    .then(res => res.json()). then(data =>{
-      console.log(data);
-    })
-    .catch(err => {
-      console.error(err);
-      this.setState({loginerror: 'Error logging in, please try again'})
-    });
-  }
-
-  onSubmit3 = (event) => {
+  onSubmit = (event) => {
     event.preventDefault();
     const entzip = this.state.zip;
     fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/' + entzip + '/radians')
@@ -77,23 +91,7 @@ export default class ProfileForm extends Component {
         .catch(err => {
           console.error(err);
           this.setState({apiresponse: 'Error updating profile, please try again'})
-        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        })      
       } else {
         this.setState({apiresponse: 'Error, zip code not found. Please check zip and try again'})
         const error = new Error(res.error);
@@ -106,37 +104,12 @@ export default class ProfileForm extends Component {
     });
   }
 
-
-  onSubmit = (event) => {
-    event.preventDefault();
-    const entzip = this.state.zip;
-    fetch('/api/authenticate/' + entzip, {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      if (res.status === 200) {
-        window.location.replace("/");
-      } else {
-        const error = new Error(res.error);
-        throw error;
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      this.setState({loginerror: 'Error logging in, please try again'})
-    });
-  }
-
   render() {
     return (
-      <form onSubmit={this.onSubmit3}>
-
-
+      <form onSubmit={this.onSubmit}>
     <h3><strong>Patch2 Profile</strong></h3>
+    { this.state.photo &&
+    <img className="userphoto" src={this.state.photo} alt="User photo"></img>}
     <h4>Display Name</h4>
     <input type="text" id="name" className="form-control quest" required 
     name="displayname"
@@ -174,19 +147,31 @@ export default class ProfileForm extends Component {
       <option value="Other">Other</option>
     </select>
 
-    <h4>Patch Gender Preference (Select all that apply)</h4>
-    <label className="checkbox-inline"><input type='checkbox'
+    <h4>Patch Gender Preference</h4>
+    <label>Male<select className="form-control form-control-sm quest" id="malematch"
     name="malematch"
-    onClick={this.toggleMale.bind(this)}/>
-    Male </label>
-    <label className="checkbox-inline"><input type="checkbox"
+    value={this.state.malematch}
+    onChange={this.handleInputChange}>
+      <option value=""></option>
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select></label>
+    <label>Female<select className="form-control form-control-sm quest" id="femalematch"
     name="femalematch"
-    onClick={this.toggleFemale.bind(this)}/>
-    Female </label>
-    <label className="checkbox-inline"><input type="checkbox" value="Other"
+    value={this.state.femalematch}
+    onChange={this.handleInputChange}>
+      <option value=""></option>
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select></label>
+    <label>Other<select className="form-control form-control-sm quest" id="othermatch"
     name="othermatch"
-    onClick={this.toggleOther.bind(this)}/>
-    Other </label>
+    value={this.state.othermatch}
+    onChange={this.handleInputChange}>
+      <option value=""></option>
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select></label>
 
     <h4>Age</h4>
     <input type="number" id="age" className="form-control quest" required

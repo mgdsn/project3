@@ -14,7 +14,6 @@ module.exports = function(app) {
   });
 
   app.get('/api/secret', withAuth, function(req, res) {
-    console.log(req.email);
     res.send('The password is potato');
   });
   
@@ -25,7 +24,6 @@ module.exports = function(app) {
         email: req.body.email
     }).then(function(result) {
       if (result !== null) {
-        console.log(result);
         res.send("A user with that email already exists.");
       } else {
         user.save(function(err) {
@@ -64,6 +62,20 @@ module.exports = function(app) {
       }
    });
   });
+
+  app.get("/api/getprofile", withAuth, function(req, res) {
+    User.findOne({
+        email: req.email
+    }).then(function(result) {
+      if (result.displayname !== null) {
+        res.status(200).send(result);
+      } else {
+        res.status(500).send("No info");
+      }
+    });
+  });
+
+
 
 
   app.post('/api/authenticate', function(req, res) {
