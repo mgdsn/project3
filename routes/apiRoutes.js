@@ -8,15 +8,6 @@ const secret = process.env.SECRET;
 
 module.exports = function(app) {
   
-
-  app.get('/api/home', function(req, res) {
-    res.send('Welcome!');
-  });
-
-  app.get('/api/secret', withAuth, function(req, res) {
-    res.send('The password is potato');
-  });
-  
   app.post("/api/register", function(req, res) {
     const { email, password } = req.body;
     const user = new User({ email, password });
@@ -75,6 +66,79 @@ module.exports = function(app) {
     });
   });
 
+  app.post("/api/updatedist", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$set": { "zipdist": req.body
+  }}).exec(function(err, data){
+      if(err) {
+          console.log(err);
+          res.status(500).send(err);
+      } else {
+        res.status(200).send("Successfully updated profile.");
+      }
+   });
+  });
+
+  app.get("/api/getpatch", withAuth, function(req, res) {
+    User.findOne({
+        email: req.email
+    }).then(function(result) {
+
+      let gendermatches = []
+
+      if (result.malematch === true){
+        gendermatches.push("Male")
+      }
+
+      if (result.femalematch === true){
+        gendermatches.push("Female")
+      }
+
+      if (result.othermatch === true){
+        gendermatches.push("Other")
+      }
+
+    
+
+
+
+      User.findOne({
+        subculture: result.subculture,
+        _id: {$ne: result._id, $nin: [result.liked], $nin: [result.disliked]  },
+        age: { $gte: result.minage, $lte: result.maxage },
+        gender: {$in: gendermatches}
+
+
+
+    }).then(function(result) {
+      console.log(result)
+      res.status(200).send(result);
+  });
+});
+});
+
+
+
+
+app.get("/api/getpatch2", withAuth, function(req, res) {
+  User.findOne({
+      email: req.email
+  }).then(function(result) {
+
+    fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/97211/radians')
+    .then(res => {
+
+ console.log("this is res" + res);
+ console.log("this is result" + result);
+
+
+
+  }).then(function(result) {
+    console.log(result)
+    res.status(200).send(result);
+});
+});
+});
 
 
 

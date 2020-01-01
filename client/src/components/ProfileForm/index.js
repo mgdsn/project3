@@ -19,7 +19,7 @@ export default class ProfileForm extends Component {
       othermatch: false,
       subculture: '',
       about: '',
-      apiresponse: ''
+      apiresponse: '',
     };
 
     componentWillMount() {
@@ -72,8 +72,42 @@ export default class ProfileForm extends Component {
     this.setState({othermatch: !this.state.othermatch});
   }
 
+  setDistance = () => {
+    const zipcode = this.state.zip
+    const distance = this.state.distance
+    fetch('https://www.zipcodeapi.com/rest/js-BSQYnEbNriP527fDxlhcoLwxaGgM6wLGoPgFya56dXJlpvMVFZJt3nOkCkpeyUuk/radius.json/' + zipcode + '/' + distance + '/mile?minimal')
+    .then(res => res.json())
+    .then(res => {
+      let json = JSON.stringify(res);
+      let array = JSON.parse(json);
+      let newarray = [];
+      
+      array.zip_codes.forEach(function(item){
+       newarray.push(item);
+    })
+    return newarray
+  }).then( newarray => {
+
+    fetch('/api/updatedist', {
+      method: 'POST',
+      body: JSON.stringify(newarray),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    })
+    .catch(err => {
+      console.error(err);
+    });
+    
+  }
+
+  
+
   onSubmit = (event) => {
     event.preventDefault();
+    this.setDistance();
     const entzip = this.state.zip;
     fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/' + entzip + '/radians')
     .then(res => {
