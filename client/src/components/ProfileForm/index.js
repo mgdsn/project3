@@ -22,7 +22,7 @@ export default class ProfileForm extends Component {
       apiresponse: '',
     };
 
-    componentWillMount() {
+    componentDidMount() {
       fetch('/api/getprofile')
       .then(res => res.json())
       .then(res => {
@@ -143,7 +143,7 @@ export default class ProfileForm extends Component {
       <form onSubmit={this.onSubmit}>
     <h3><strong>Patch2 Profile</strong></h3>
     { this.state.photo &&
-    <img className="userphoto" src={this.state.photo} alt="User photo"></img>}
+    <img className="userphoto" src={this.state.photo} alt="User"></img>}
     <h4>Display Name</h4>
     <input type="text" id="name" className="form-control quest" required 
     name="displayname"
@@ -281,7 +281,7 @@ export default class ProfileForm extends Component {
     </select>
 
     <h4>About Me</h4>
-    <textarea rows="5" name="extrainfo" id="about" className="form-control form-control-sm quest" required
+    <textarea rows="5" id="about" className="form-control form-control-sm quest" required
     name="about"
     value={this.state.about}
     onChange={this.handleInputChange}></textarea>

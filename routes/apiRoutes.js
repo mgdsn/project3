@@ -74,7 +74,7 @@ module.exports = function(app) {
           console.log(err);
           res.status(500).send(err);
       } else {
-        res.status(200).send("Successfully updated profile.");
+        res.status(200).send("Successfully updated.");
       }
    });
   });
@@ -106,12 +106,12 @@ module.exports = function(app) {
         subculture: result.subculture,
         _id: {$ne: result._id, $nin: [result.liked], $nin: [result.disliked]  },
         age: { $gte: result.minage, $lte: result.maxage },
-        gender: {$in: gendermatches}
+        gender: {$in: gendermatches},
+        zip:{$in: result.zipdist}
 
 
 
     }).then(function(result) {
-      console.log(result)
       res.status(200).send(result);
   });
 });

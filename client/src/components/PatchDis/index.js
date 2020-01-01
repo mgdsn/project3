@@ -19,7 +19,7 @@ export default class PatchDis extends Component {
     apiresponse: ''
   };
 
-  componentWillMount() {
+  componentDidMount() {
 this.loadNextPatch();
     
   }
@@ -64,8 +64,8 @@ loadNextPatch = () => {
     <h5 className="age">Age: {this.state.age}</h5>
     <h5 className="gender">Gender: {this.state.gender}</h5>
     <p className="about">{this.state.about}</p>
-    <a href="#" className="btn btn-primary dislike">Dislike</a>
-    <a href="#" className="btn btn-primary like">Like</a>
+    <button className="btn btn-primary dislike">Dislike</button>
+    <button className="btn btn-primary like">Like</button>
   </div>
 </div>
     );
