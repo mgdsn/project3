@@ -8,15 +8,6 @@ const secret = process.env.SECRET;
 
 module.exports = function(app) {
   
-
-  app.get('/api/home', function(req, res) {
-    res.send('Welcome!');
-  });
-
-  app.get('/api/secret', withAuth, function(req, res) {
-    res.send('The password is potato');
-  });
-  
   app.post("/api/register", function(req, res) {
     const { email, password } = req.body;
     const user = new User({ email, password });
@@ -75,7 +66,57 @@ module.exports = function(app) {
     });
   });
 
+  app.post("/api/updatedist", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$set": { "zipdist": req.body
+  }}).exec(function(err, data){
+      if(err) {
+          console.log(err);
+          res.status(500).send(err);
+      } else {
+        res.status(200).send("Successfully updated.");
+      }
+   });
+  });
 
+  app.get("/api/getpatch", withAuth, function(req, res) {
+    User.findOne({
+        email: req.email
+    }).then(function(result) {
+
+      let gendermatches = []
+
+      if (result.malematch === true){
+        gendermatches.push("Male")
+      }
+
+      if (result.femalematch === true){
+        gendermatches.push("Female")
+      }
+
+      if (result.othermatch === true){
+        gendermatches.push("Other")
+      }
+
+      let allmatched = result.liked.concat(result.rejected);
+
+      User.findOne({
+        subculture: result.subculture,
+        _id: { $ne: result._id },
+        age: { $gte: result.minage, $lte: result.maxage },
+        gender: { $in: gendermatches},
+        zip:{ $in: result.zipdist},
+        email: { $nin: allmatched },
+
+    }).then(function(result) {
+      if (result){
+      res.status(200).send(result);
+    } else {
+      res.status(404).send("No result");
+  }
+  });
+});
+});
 
 
   app.post('/api/authenticate', function(req, res) {
@@ -128,7 +169,46 @@ module.exports = function(app) {
   });
   
 
+  app.post("/api/updatedislike", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$push": { "rejected": req.body.useremail, 
+    }}).exec(function(err, data){
+    if(err) {
+        console.log(err);
+        res.status(500).send(err);
+    } else {
+      res.status(200).send("Successfully updated rejected.");
+    }
+    });
+  });
 
 
+  app.post("/api/updatelike", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$push": { "liked": req.body.useremail, 
+    }}).exec(function(err, data){
+    if(err) {
+        console.log(err);
+        res.status(500).send(err);
+    } else {
+      res.status(200).send("Successfully updated liked.");
+    }
+    });
+  });
+
+  app.post("/api/checkmatch", withAuth, function(req, res) {
+    User.findOne({
+      email: req.body.useremail,
+  }).then(function(result) {
+    if (result.liked.includes(req.email)){
+      res.status(200).send("It's a match");
+    } else{
+      res.status(404).send("No result");
+    }
+  
+
+
+  })
+  });
 
 };

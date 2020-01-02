@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema({
   subculture: {type: String},
   about: {type: String},
   liked: [{type: String}],
-  rejected: [{type: String}]
+  rejected: [{type: String}],
+  zipdist: [{type: String}]
 });
 
 UserSchema.pre('save', function(next) {

@@ -1,0 +1,17 @@
+.card{
+  width: 18rem;
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; 
+  background-color: #719192!important;
+  color: #dfcdc3;/* Added */
+
+}
+
+.like{
+  float: right;
+}
+
+.error, .patch{
+  text-align: center;
+}
