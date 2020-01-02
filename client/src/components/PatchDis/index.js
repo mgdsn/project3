@@ -16,7 +16,8 @@ export default class PatchDis extends Component {
     othermatch: false,
     subculture: '',
     about: '',
-    apiresponse: ''
+    apiresponse: '',
+    _id: '',
   };
 
   componentDidMount() {
@@ -28,8 +29,10 @@ loadNextPatch = () => {
     fetch('/api/getpatch')
     .then(res => res.json())
     .then(res => {
-      if (res.display !== null) {
+      console.log(res)
+      if (res.status !== 404) {
         this.setState({
+          useremail: res.email,
           zip: res.zip,
           displayname: res.displayname,
           photo: res.photo,
@@ -46,17 +49,55 @@ loadNextPatch = () => {
         })
    
       } else {
-        return
+        this.setState({apiresponse: 'No new patches, check back later'})
+        
       }
     })
     .catch(err => {
-      console.error(err);
+      this.setState({apiresponse: 'No new patches, check back later',
+      displayname: '',
+      zip: '',
+      photo: '',
+      distance: '',
+      age: '',
+      minage: '',
+      maxage: '',
+      gender: '',
+      malematch: false,
+      femalematch: false,
+      othermatch: false,
+      subculture: '',
+      about: '',
+      _id: '',    
+    })
+
     });
     
   }
 
+  procDislike = () => {
+    console.log(this.state.useremail)
+    fetch('/api/updatedislike', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      this.loadNextPatch();
+    }).catch(err => {
+      console.error(err);
+      this.setState({apiresponse: 'Error processing'})
+    })
+  }
+
   render() {
     return (
+      <div>
+      { this.state.apiresponse &&
+        <h3 className="error"> {this.state.apiresponse } </h3> }
+{ this.state.displayname &&
 <div className="card">
   <img className="card-img-top" src={this.state.photo} alt={this.state.displayname}/>
   <div className="card-body">
@@ -64,10 +105,12 @@ loadNextPatch = () => {
     <h5 className="age">Age: {this.state.age}</h5>
     <h5 className="gender">Gender: {this.state.gender}</h5>
     <p className="about">{this.state.about}</p>
-    <button className="btn btn-primary dislike">Dislike</button>
-    <button className="btn btn-primary like">Like</button>
+    <button onClick={this.procDislike} className="btn btn-primary dislike">Dislike</button>
+    <button onClick={this.procLike}className="btn btn-primary like">Like</button>
   </div>
-</div>
+</div>}
+</div> 
+
     );
   }
 }

@@ -98,48 +98,23 @@ module.exports = function(app) {
         gendermatches.push("Other")
       }
 
-    
-
-
-
       User.findOne({
         subculture: result.subculture,
-        _id: {$ne: result._id, $nin: [result.liked], $nin: [result.disliked]  },
+        _id: {$ne: result._id },
         age: { $gte: result.minage, $lte: result.maxage },
         gender: {$in: gendermatches},
-        zip:{$in: result.zipdist}
-
-
+        zip:{$in: result.zipdist},
+        email: {$nin: result.liked, $nin: result.rejected }
 
     }).then(function(result) {
+      if (result){
       res.status(200).send(result);
+    } else {
+      res.status(404).send("No result");
+  }
   });
 });
 });
-
-
-
-
-app.get("/api/getpatch2", withAuth, function(req, res) {
-  User.findOne({
-      email: req.email
-  }).then(function(result) {
-
-    fetch('https://www.zipcodeapi.com/rest/js-lqUSl36ZgsfowhwsX9xIhCleRx71J0eumdCiRIsGyz5x4nxjpjLtUdbZ803RpoDZ/info.json/97211/radians')
-    .then(res => {
-
- console.log("this is res" + res);
- console.log("this is result" + result);
-
-
-
-  }).then(function(result) {
-    console.log(result)
-    res.status(200).send(result);
-});
-});
-});
-
 
 
   app.post('/api/authenticate', function(req, res) {
@@ -192,6 +167,18 @@ app.get("/api/getpatch2", withAuth, function(req, res) {
   });
   
 
+  app.post("/api/updatedislike", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$push": { "rejected": req.body.useremail, 
+    }}).exec(function(err, data){
+    if(err) {
+        console.log(err);
+        res.status(500).send(err);
+    } else {
+      res.status(200).send("Successfully updated rejected.");
+    }
+    });
+  });
 
 
 
