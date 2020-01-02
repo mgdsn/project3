@@ -18,6 +18,7 @@ export default class PatchDis extends Component {
     about: '',
     apiresponse: '',
     _id: '',
+    matchresponse: false
   };
 
   componentDidMount() {
@@ -26,6 +27,7 @@ this.loadNextPatch();
   }
 
 loadNextPatch = () => {
+  this.setState({matchresponse: false})
     fetch('/api/getpatch')
     .then(res => res.json())
     .then(res => {
@@ -68,15 +70,35 @@ loadNextPatch = () => {
       othermatch: false,
       subculture: '',
       about: '',
-      _id: '',    
+      _id: ''
     })
 
     });
     
   }
 
+  checkMatch = () => {
+    fetch('/api/checkmatch', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+   
+      if (res.status === 404){
+        this.loadNextPatch();
+      } else if (res.status === 200){
+        this.setState({matchresponse: true})
+      }
+    }).catch(err => {
+      console.error(err);
+      this.setState({apiresponse: 'Error processing'})
+    })
+  }
+
   procDislike = () => {
-    console.log(this.state.useremail)
     fetch('/api/updatedislike', {
       method: 'POST',
       body: JSON.stringify(this.state),
@@ -92,9 +114,29 @@ loadNextPatch = () => {
     })
   }
 
+
+  procLike = () => {
+    fetch('/api/updatelike', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      this.checkMatch();
+    }).catch(err => {
+      console.error(err);
+      this.setState({apiresponse: 'Error processing'})
+    })
+  }
+
   render() {
     return (
       <div>
+      { this.state.matchresponse &&
+        <h3 onClick={this.loadNextPatch} className="patch">Patched! Go to the <a href="/patched">Patched</a> page or click next to continue patching.<br/>
+        <button className="btn btn-primary next">Next</button></h3> }
       { this.state.apiresponse &&
         <h3 className="error"> {this.state.apiresponse } </h3> }
 { this.state.displayname &&
@@ -106,7 +148,7 @@ loadNextPatch = () => {
     <h5 className="gender">Gender: {this.state.gender}</h5>
     <p className="about">{this.state.about}</p>
     <button onClick={this.procDislike} className="btn btn-primary dislike">Dislike</button>
-    <button onClick={this.procLike}className="btn btn-primary like">Like</button>
+    <button onClick={this.procLike} className="btn btn-primary like">Like</button>
   </div>
 </div>}
 </div> 

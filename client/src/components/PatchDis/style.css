@@ -12,6 +12,6 @@
   float: right;
 }
 
-.error{
+.error, .patch{
   text-align: center;
 }

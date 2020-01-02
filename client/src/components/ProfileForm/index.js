@@ -141,7 +141,7 @@ export default class ProfileForm extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-    <h3><strong>Patch2 Profile</strong></h3>
+    <h3 id="header"><strong>Patch2 Profile</strong></h3>
     { this.state.photo &&
     <img className="userphoto" src={this.state.photo} alt="User"></img>}
     <h4>Display Name</h4>

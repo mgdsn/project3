@@ -98,13 +98,15 @@ module.exports = function(app) {
         gendermatches.push("Other")
       }
 
+      let allmatched = result.liked.concat(result.rejected);
+
       User.findOne({
         subculture: result.subculture,
-        _id: {$ne: result._id },
+        _id: { $ne: result._id },
         age: { $gte: result.minage, $lte: result.maxage },
-        gender: {$in: gendermatches},
-        zip:{$in: result.zipdist},
-        email: {$nin: result.liked, $nin: result.rejected }
+        gender: { $in: gendermatches},
+        zip:{ $in: result.zipdist},
+        email: { $nin: allmatched },
 
     }).then(function(result) {
       if (result){
@@ -181,5 +183,32 @@ module.exports = function(app) {
   });
 
 
+  app.post("/api/updatelike", withAuth, function(req, res) {
+    User.findOneAndUpdate({ "email": req.email }, 
+    { "$push": { "liked": req.body.useremail, 
+    }}).exec(function(err, data){
+    if(err) {
+        console.log(err);
+        res.status(500).send(err);
+    } else {
+      res.status(200).send("Successfully updated liked.");
+    }
+    });
+  });
+
+  app.post("/api/checkmatch", withAuth, function(req, res) {
+    User.findOne({
+      email: req.body.useremail,
+  }).then(function(result) {
+    if (result.liked.includes(req.email)){
+      res.status(200).send("It's a match");
+    } else{
+      res.status(404).send("No result");
+    }
+  
+
+
+  })
+  });
 
 };
