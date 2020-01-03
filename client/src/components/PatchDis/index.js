@@ -140,7 +140,7 @@ loadNextPatch = () => {
       { this.state.apiresponse &&
         <h3 className="error"> {this.state.apiresponse } </h3> }
 { this.state.displayname &&
-<div className="card">
+<div className="card patchcard">
   <img className="card-img-top" src={this.state.photo} alt={this.state.displayname}/>
   <div className="card-body">
     <h5 className="displayname">{this.state.displayname}</h5>

@@ -211,4 +211,30 @@ module.exports = function(app) {
   })
   });
 
+  app.get("/api/getmatches", withAuth, function(req, res) {
+    User.find({
+      liked: {$in: req.email}
+    }).then(function(result) {
+      User.findOne({
+        email: req.email,
+    }).then(function(result2) {
+      let matchArray = [];
+      
+    
+      result.forEach(element => {
+        if(result2.liked.includes(element.email)){
+          matchArray.push(element);
+        }
+
+      });
+
+      if (matchArray){
+      res.status(200).send(matchArray);
+    } else {
+      res.status(404).send("No result");
+  }
+  });
+});
+});
+
 };
