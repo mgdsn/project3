@@ -1,10 +1,11 @@
-.card{
+.patchedcard{
 
   float: left;
   width: 200px;
   height: 400px;
   margin: 5px;
-
+  background-color: #719192!important;
+  color: #dfcdc3;/* Added */
 
 
 }

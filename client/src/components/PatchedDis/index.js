@@ -41,8 +41,10 @@ class PatchedDis extends Component {
     if ( this.state.usersLoaded ) {
       return (
         <div className= "mainDiv">
+        { this.state.apiresponse &&
+        <h3 className="error"> {this.state.apiresponse } </h3> }
         {this.state.matchArray.map(matches => (
-        <div className="card" key={matches._id}>
+        <div className="card patchedcard" key={matches._id}>
         <img className="card-img-top" src={matches.photo} alt={matches.displayname}/>
         <div className="card-body">
           <h5 className="displayname">{matches.displayname}</h5>
