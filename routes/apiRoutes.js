@@ -211,4 +211,20 @@ module.exports = function(app) {
   })
   });
 
+
+  app.get("/api/getmatches", withAuth, function(req, res) {
+    User.find({
+      liked: {$in: req.email},
+  }).then(function(result) {
+    if (result){
+      res.status(200).send(result);
+    } else {
+      res.status(404).send("No result");
+  }
+  
+
+
+  })
+  });
+
 };
