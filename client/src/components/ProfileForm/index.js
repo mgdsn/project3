@@ -19,7 +19,7 @@ export default class ProfileForm extends Component {
       othermatch: false,
       subculture: '',
       about: '',
-      apiresponse: '',
+      apiresponse: ''
     };
 
     componentDidMount() {
