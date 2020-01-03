@@ -100,6 +100,10 @@ module.exports = function(app) {
 
       let allmatched = result.liked.concat(result.rejected);
 
+      let logender = result.gender.toLowerCase();
+
+      let genquery = logender + 'match';
+
       User.findOne({
         subculture: result.subculture,
         _id: { $ne: result._id },
@@ -107,6 +111,7 @@ module.exports = function(app) {
         gender: { $in: gendermatches},
         zip:{ $in: result.zipdist},
         email: { $nin: allmatched },
+        [genquery]: true
 
     }).then(function(result) {
       if (result){
