@@ -21,8 +21,7 @@ const UserSchema = new mongoose.Schema({
   about: {type: String},
   liked: [{type: String}],
   rejected: [{type: String}],
-  zipdist: [{type: String}],
-  genderprefs: [{type: String}]
+  zipdist: [{type: String}]
 });
 
 UserSchema.pre('save', function(next) {
