@@ -1,5 +1,6 @@
 //var db = require("./models");
 const User = require('../models/User.js');
+const Chat = require('../models/Chat.js');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const withAuth = require('../middleware.js');
@@ -201,12 +202,35 @@ module.exports = function(app) {
     });
   });
 
+
+  app.post("/api/updatechats", withAuth, function(req, res) {
+    let message = req.body.displayName + ": " + req.body.message
+    Chat.findOneAndUpdate({ "users": {$all:  [req.email, req.body.patchEmail ]}}, 
+    { "$push": { "messages": message, 
+    }}).exec(function(err, data){
+      console.log(data);
+    if(err) {
+        console.log(err);
+        res.status(500).send(err);
+    } else {
+      res.status(200).send("Successfully updated chats.");
+    }
+    });
+  });
+
+
   app.post("/api/checkmatch", withAuth, function(req, res) {
     User.findOne({
       email: req.body.useremail,
   }).then(function(result) {
     if (result.liked.includes(req.email)){
       res.status(200).send("It's a match");
+      const chat = new Chat({ users: [req.email, req.body.useremail] });
+      chat.save(function(err) {
+ 
+      })
+
+
     } else{
       res.status(404).send("No result");
     }

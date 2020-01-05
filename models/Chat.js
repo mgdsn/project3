@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 
 const ChatSchema = new mongoose.Schema({
-  senderemail: { type: String},
-  receiveremail: {type: String},
-  message: {type: String},
-  timestamps: true
-
+  users: [{type: String}],
+  messages: [{type: String}]
 });
 
 module.exports = mongoose.model('Chat', ChatSchema);

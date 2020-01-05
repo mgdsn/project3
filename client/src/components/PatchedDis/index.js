@@ -6,17 +6,37 @@ class PatchedDis extends Component {
     matchArray: '',
     usersLoaded: false,
     showModal: false,
-    displayName: '',
-    patchEmail: ''
+    patchDisplayName: '',
+    displayName:'',
+    patchEmail: '',
+    message: ''
   };
 
 
   componentDidMount() {
     this.loadMatches();
+    this.getDisplayName();
       }
 
   handleChat = (displayname, email) => {
-    this.setState({showModal: true, displayName: displayname, patchEmail: email})
+    this.setState({showModal: true, patchDisplayName: displayname, patchEmail: email})
+  }
+
+  getDisplayName = () => {
+    fetch('/api/getprofile')
+    .then(res => res.json())
+    .then(res => {
+      if (res.display !== null) {
+        this.setState({
+          displayName: res.displayname,
+        })
+      } else {
+        return
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
 
@@ -25,23 +45,40 @@ class PatchedDis extends Component {
     .then(res => res.json())
     .then(res => {
       
-        console.log(res)
       if (res.status !== 404) {
         this.setState({matchArray: res})
         this.setState({usersLoaded: true})
-
-    
-   
       } else {
-        console.log("butts");
-        
+        this.setState({apiresponse: 'No matches found'})
       }
     })
     .catch(err => {
- 
-
+      this.setState({apiresponse: 'No matches found'})
     });
     
+  }
+
+
+  submitChat = (event) => {
+    event.preventDefault();
+    fetch('/api/updatechats', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({apiresponse: 'Error submitting chat, please try again'})
+    })      
+  }
+
+  handleInputChange = (event) => {
+    const { value, name } = event.target;
+    this.setState({
+      [name]: value
+    });
   }
 
   render() {
@@ -69,7 +106,7 @@ class PatchedDis extends Component {
   <div className="modal-dialog" role="document">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Chat with {this.state.displayName}</h5>
+        <h5 className="modal-title" id="exampleModalLabel">Chat with {this.state.patchDisplayName}</h5>
         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -80,9 +117,9 @@ class PatchedDis extends Component {
       <div className="modal-footer">
 
 
-      <form className="chatform">
+      <form className="chatform" onSubmit={this.submitChat}>
   <div className="form-group">
-    <input type="text" className="form-control" id="chatmessage" aria-describedby="chatMsg" placeholder="Enter message"/>
+    <input value={this.state.message} name="message" onChange={this.handleInputChange} type="text" className="form-control" id="chatmessage" aria-describedby="chatMsg" placeholder="Enter message"/>
 
   </div>
   <button type="submit" className="btn btn-primary sendchat">Send</button>
