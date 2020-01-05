@@ -1,17 +1,20 @@
 .patchedcard{
 
   float: left;
-  width: 200px;
+  width:200px;
   height: 400px;
   margin: 5px;
   background-color: #719192!important;
   color: #dfcdc3;/* Added */
+  border-radius: 50px;
+  border-color: black;
 
 
 }
 
 .mainDiv{
-margin-bottom: 200px;
+margin-bottom: 100px;
+display:inline-block
 }
 .card-img-top{
   width: 100px;
@@ -33,3 +36,18 @@ margin-bottom: 200px;
   overflow: scroll;
 }
 
+.chatform{
+  padding-bottom: 0px!important;
+  width: 100%;
+}
+.closebtn{
+  float: right;
+}
+
+.modal-header, .modal-footer{
+  background-color: #719192!important;
+}
+
+.modal-body{
+  background-color: #dfcdc3!important;
+}

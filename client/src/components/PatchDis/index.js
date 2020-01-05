@@ -16,9 +16,9 @@ export default class PatchDis extends Component {
     othermatch: false,
     subculture: '',
     about: '',
-    apiresponse: '',
     _id: '',
-    matchresponse: false
+    matchresponse: false,
+    apiresponse: 'Please fill out your profile to begin patching.'
   };
 
   componentDidMount() {
@@ -28,11 +28,12 @@ this.loadNextPatch();
 
 loadNextPatch = () => {
   this.setState({matchresponse: false})
+
     fetch('/api/getpatch')
     .then(res => res.json())
     .then(res => {
       console.log(res)
-      if (res.status !== 404) {
+      if (res.displayname !== null) {
         this.setState({
           useremail: res.email,
           zip: res.zip,
@@ -47,7 +48,8 @@ loadNextPatch = () => {
           femalematch: res.femalematch,
           othermatch: res.othermatch,
           subculture: res.subculture,
-          about: res.about
+          about: res.about,
+          apiresponse: ''
         })
    
       } else {
@@ -90,7 +92,7 @@ loadNextPatch = () => {
       if (res.status === 404){
         this.loadNextPatch();
       } else if (res.status === 200){
-        this.setState({matchresponse: true})
+        this.setState({matchresponse: true}) 
       }
     }).catch(err => {
       console.error(err);
