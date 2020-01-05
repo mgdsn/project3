@@ -9,7 +9,8 @@ class PatchedDis extends Component {
     patchDisplayName: '',
     displayName:'',
     patchEmail: '',
-    message: ''
+    message: '',
+    allmessages: []
   };
 
 
@@ -19,7 +20,12 @@ class PatchedDis extends Component {
       }
 
   handleChat = (displayname, email) => {
-    this.setState({showModal: true, patchDisplayName: displayname, patchEmail: email})
+ 
+    this.setState({
+      showModal: true, patchDisplayName: displayname, patchEmail: email
+  }, () => {
+      this.timer = setInterval(()=> this.getMessages(), 1000);
+  });
   }
 
   getDisplayName = () => {
@@ -38,6 +44,25 @@ class PatchedDis extends Component {
       console.error(err);
     });
   }
+
+  getMessages = () => {
+    fetch('/api/getmessages', {
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json()).then(res => {
+      this.setState({allmessages: res.messages})
+      console.log(this.state.allmessages)
+
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({apiresponse: 'Error submitting chat, please try again'})
+    })    
+  }
+
 
 
   loadMatches = () => {
@@ -67,6 +92,9 @@ class PatchedDis extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
+    }).then(res => {
+      this.setState({message: ''})
+
     })
     .catch(err => {
       console.error(err);
@@ -79,6 +107,13 @@ class PatchedDis extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+
+  procClose = (event) => {
+    clearInterval(this.timer)
+    this.timer = null;
+    this.setState({allmessages: []})
   }
 
   render() {
@@ -107,12 +142,22 @@ class PatchedDis extends Component {
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">Chat with {this.state.patchDisplayName}</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" onClick={this.procClose} className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div className="modal-body">
-        ...
+
+
+      {this.state.allmessages.map(matches => (
+
+        <p>{matches}</p>
+          ))}
+
+
+
+
+
       </div>
       <div className="modal-footer">
 
@@ -123,28 +168,13 @@ class PatchedDis extends Component {
 
   </div>
   <button type="submit" className="btn btn-primary sendchat">Send</button>
-  <button type="button" className="btn btn-secondary closebtn" data-dismiss="modal">Close</button>
+  <button onClick={this.procClose} type="button" className="btn btn-secondary closebtn" data-dismiss="modal">Close</button>
 
-</form>
-
-
-
-
-
-     
-        
+</form>    
       </div>
     </div>
   </div>
-</div>
-        
-        
-        
-        
-        
-        
-        
-        
+</div>      
         }
       </div>
       )

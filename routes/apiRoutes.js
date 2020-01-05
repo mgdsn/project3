@@ -218,6 +218,18 @@ module.exports = function(app) {
     });
   });
 
+  app.post("/api/getmessages", withAuth, function(req, res) {
+    Chat.findOne({
+      "users": {$all:  [req.email, req.body.patchEmail ]}
+  }).then(function(result) {
+    console.log(result)
+      res.status(200).send(result);
+  
+  
+  })
+  });
+ 
+
 
   app.post("/api/checkmatch", withAuth, function(req, res) {
     User.findOne({
