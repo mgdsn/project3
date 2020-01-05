@@ -5,9 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cookieParser = require('cookie-parser');
-//const routes = require("./routes");
-const secret = process.env.SECRET;
-// Serve up static assets (usually on heroku)
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
@@ -17,8 +15,6 @@ app.use(express.json());
 app.use(express.static("public"));
 require("./routes/apiRoutes")(app);
 
-// Send every request to the React app
-// Define any API routes before this runs
 app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
