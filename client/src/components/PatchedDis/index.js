@@ -10,7 +10,8 @@ class PatchedDis extends Component {
     displayName:'',
     patchEmail: '',
     message: '',
-    allmessages: []
+    allmessages: [],
+    apiresponse: ''
   };
 
 
@@ -54,8 +55,6 @@ class PatchedDis extends Component {
       }
     }).then(res => res.json()).then(res => {
       this.setState({allmessages: res.messages})
-      console.log(this.state.allmessages)
-
     })
     .catch(err => {
       console.error(err);
@@ -69,10 +68,13 @@ class PatchedDis extends Component {
     fetch('/api/getmatches')
     .then(res => res.json())
     .then(res => {
-      
+      if (res.length === 0){
+        this.setState({apiresponse: "You have not yet patched."})
+      }
       if (res.status !== 404) {
         this.setState({matchArray: res})
         this.setState({usersLoaded: true})
+
       } else {
         this.setState({apiresponse: 'No matches found'})
       }
@@ -148,15 +150,10 @@ class PatchedDis extends Component {
       </div>
       <div className="modal-body">
 
-
       {this.state.allmessages.map(matches => (
 
-        <p>{matches}</p>
+        <p key={matches.users}>{matches}</p>
           ))}
-
-
-
-
 
       </div>
       <div className="modal-footer">
